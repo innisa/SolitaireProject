@@ -10,7 +10,7 @@ public class Card {
     //declare fields rank and suit
     private int rank;
     private String suit;
-    private ImageButton img; //NEED TO SET IN ON CREATE
+    //private ImageButton img; //NEED TO SET IN ON CREATE
     // private String img;
     //use r .
     //wait for images in card class until get images from image editing class
