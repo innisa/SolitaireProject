@@ -39,6 +39,10 @@ public class scrnGame extends AppCompatActivity {
     private Card c6;
     private Card c7;
     private Card deckClick;
+    private Card cDiamond;
+    private Card cClub;
+    private Card cHeart;
+    private Card cSpade;//todo see why grey
 
     private int intClick;
     ///ps when set oe object to another they point to the same card--so like be careful of that Alice
@@ -59,7 +63,7 @@ public class scrnGame extends AppCompatActivity {
     private int wRidgeCount4;
     private int wRidgeCount5;
     private int wRidgeCount6;
-    private int wRidgeCount7;
+    private int wRidgeCount7; //todo dont i use this when moving one deck to another
 
     private ArrayList<Card> p1;
     private ArrayList<Card> p2;
@@ -69,20 +73,29 @@ public class scrnGame extends AppCompatActivity {
     private ArrayList<Card> p6;
     private ArrayList<Card> p7;
     private ArrayList<Card> pMove;
+    private ArrayList<Card> pDiamond;
+    private ArrayList<Card> pHeart;
+    private ArrayList<Card> pSpade;
+    private ArrayList<Card> pClub;
+
+    private int deckNum=0; //stores number of deck if isDeckClicked is false
 //todo have an arraylist for each pile
     //todo have values for the number of red and white ridges on each pile
     //todo quit button
     //todo tabbed activity
     //todo settings
-    //todo quit, when lose, when win, when deck runs out of cards, when draw a card have to add that card to other deck
+    //todo quit, when lose, when win, when deck runs  out of cards, when draw a card have to add that card to other deck
     //todo if pile empty and there are red left flip those jaunts
     //todo before test code walk through it all
+    //todo win lose make sure on clicks
+    //todo watch out for null
     //so these arraylists- should I make it a deck-- need one for each imgCard --change them when move play to a pile or when move decks
     //when initialize--in reset I guess //should also probably be fields
 //    Card dDiamond= createCard(imgDeckDiamond);
 //    Card dSpade= createCard(imgDeckSpade);
 //    Card dClub= createCard(imgDeckClub);
 //    Card dHeart= createCard(imgDeckHeart);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,19 +153,22 @@ public class scrnGame extends AppCompatActivity {
         });
 
         //set the onclickListeners for each deck
-        imgCard1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                imgDeckOnClickListener(imgCard1);
-                //TODO ADD ANOTHER METHOD, IF CLICK DECK FIRST THEN ANOTHER DECK
-            }
-        });
-        //todo- if this deck already clicked, change the variable
+        //todo method to set these
+
 
     }
 
+    //set the onclick listeners for the piles
+    public void pileOnClickListener(ImageButton b){
+        b.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                imgDeckOnClickListener(v.getId());//caste as button etc
+//todo save button b somewhere to send it in, how grab the button-
+            }
+        });
+    }
     //method to check if a deck is already clicked//called when a deck is clicked
-
-    //todo this week work on this method
+//moves one deck to another
     public void deckMoveOnClickListener(ImageButton b){
         //need to store a field, need to store boolean on if a deck has been clicked, and store what deck was clicked
         if(isDeckClick!=true) {
@@ -176,43 +192,52 @@ public class scrnGame extends AppCompatActivity {
 
                 //everything to move one pile to the other
                 if(cCheck.isBellow(pick)){
-                    //move the deck to that deck!--change the piles(make the pile of the second add first (check make sure right order) set first pile to red card), change the white spaces,change the face card, flip the red of the old pile
-                    //todo start here
+                    //move the deck to that deck!-- change the white spaces,change the face card
+
                     //TODO make sure intMoveTo does not equal intClick
                     //figure out what piles to do, what pile was just clicked
                     int intMoveTo= btnToInt(b);
                     //TECHNICALLY COULD USE BTNTOPILE TO SAVE SPACE BUT IDK IF THAT REALLY WORKS
                     if(intMoveTo==1){
                         //add to pile one the cards from the pile that corresponds to intClick---make a method that takes into 2 arraylists and returns back a new arraylist
+
                        // if(pMove==2)
+                        //edit number of white ridges
+                        //TODO IMAGES
                         //TODO i think pmove should work here but I would check
                         p1=combinePiles(p1,pMove);
                     }
                     else if(intMoveTo==2){
                         p2= combinePiles(p2,pMove);
+                        wRidgeCount2= p2.size()-1;
                     }
                     else if(intMoveTo==3){
                         p3= combinePiles(p3,pMove);
+                        wRidgeCount3= p3.size()-1;
                     }
                     else if(intMoveTo==4){
                         p4= combinePiles(p4,pMove);
+                        wRidgeCount4= p4.size()-1;
                     }
                     else if(intMoveTo==5){
                         p5= combinePiles(p5, pMove);
+                        wRidgeCount5= p5.size()-1;
                     }
                     else if(intMoveTo==6){
                         p6= combinePiles(p6, pMove);
+                        wRidgeCount6= p6.size()-1;
                     }
                     else if(intMoveTo==7){
                         p7=combinePiles(p7, pMove);
+                        wRidgeCount7= p7.size()-1;
                     }
-
+                    //todo what do when no red and no card
                     //set first click pile to a drawn card
                     if(intClick==1){
                         p1= new ArrayList<>();
                         //p1.add(createCard(imgCard1)); ADD NEW CARD LATER BC MIGHT LEAVE SLOT EMPTY-IF RED CARD FLIP IF NO RED CARD LEAVE BLANK
 
-                    }
+                    }//todo is this right????????????? think through if clear the known piles
                     else if(intClick==2){
                         p2=new ArrayList<>();
                         if(rRidgeCount2>0)
@@ -245,17 +270,17 @@ public class scrnGame extends AppCompatActivity {
                             p7.add(createCard(imgCard7));
                     }
 
-
+                    //TODO WHITE RIDGE COUNT
 
                 }
             }
-
+//todo fix code if move play to deck huh
 
             //move first to second pile (and check if legal)
             //figure out value of bottom of the bottom card
             //When add piles add to array list
         }
-        //TODO TMRW START HERE
+
         //so i want to be able to click one deck then click another and move the first deck to the second
         //need to store what deck was clicked so that can set the other deck image to that image. and set the other deck card
         //so do I store both? ya
@@ -263,9 +288,10 @@ public class scrnGame extends AppCompatActivity {
     }
     //check to make sure img play has been clicked
     //when pile clicked see if its corresponding card works w isClickPlay
+    //call this in deckMove on Click probably
     public void imgDeckOnClickListener(ImageButton b){
         //check if works out here bc cant access b inside the other class
-        Card corrWithImg;//todo come here after lunch
+        Card corrWithImg;
         corrWithImg=btnToCard(b);
 
 
@@ -307,9 +333,8 @@ public class scrnGame extends AppCompatActivity {
 
             pick= createCard(imgCardPlay);
             isPlayClick=false;
-            //todo add ridge--if statement o figure out what pile in, then add ridge to that pile
             //if b==imgcard1 add to wRidgeCount1
-            //todo modularizee this i think
+
             if(b.equals(imgCard1))
                 wRidgeCount1+=1;
             else if(b.equals(imgCard2))
@@ -325,8 +350,8 @@ public class scrnGame extends AppCompatActivity {
             else
                 wRidgeCount7+=1;
 
-            //todo change image of ridge
-            //TODO start here
+            //todo change image of ridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         }
             //CHANGE THE IMAGE
 
@@ -341,7 +366,7 @@ public class scrnGame extends AppCompatActivity {
 
         //pick card from top of deck--
         //pick a random card from the deck, set the image of that card (or do that in the card class) ask mrs kelly
-        //TODO decide where set image of card--when doing code or in card class- if in card class will have to change eventually
+
         //remove that card- set the first image to that cards image
         //ask if can concise the <code></code>
 
@@ -359,7 +384,10 @@ public class scrnGame extends AppCompatActivity {
          c5= createCard(imgCard5);
          c6= createCard(imgCard6);
          c7= createCard(imgCard7);
-
+        cDiamond=null;
+        cClub=null;
+        cHeart=null;
+        cSpade=null;
         Card dDiamond= createCard(imgDeckDiamond);
         Card dSpade= createCard(imgDeckSpade);
         Card dClub= createCard(imgDeckClub);
@@ -402,6 +430,10 @@ public class scrnGame extends AppCompatActivity {
         p7=new ArrayList<>();
         p7.add(c7);
         pMove = null;
+        pDiamond= new ArrayList<>();
+        pClub= new ArrayList<>();
+        pHeart= new ArrayList<>();
+        pSpade= new ArrayList<>();
 
     }
     //create a card- pick it randomly from the deck and remove it
@@ -425,7 +457,7 @@ public class scrnGame extends AppCompatActivity {
 
     //send in an image button and returns a card
     public Card btnToCard(ImageButton b){
-        if(b.equals(imgCard1))
+        if(b.equals(imgCard1)) //==
             return c1;
         else if (b.equals(imgCard2))
             return c2;
@@ -442,7 +474,6 @@ public class scrnGame extends AppCompatActivity {
         else
             return null;
     }
-    //todo make a way to cheat
     //send in an image button and returns the corresponding pile/arraylist
     public ArrayList<Card> btnToPile(ImageButton b){
         if(b.equals(imgCard1))
@@ -489,6 +520,199 @@ public class scrnGame extends AppCompatActivity {
             a.add(b.get(i));
         }
         return a;
+    }
+
+
+    public void moveToSuitOnClick(ImageButton b){ //WHEN WILL I CALL THIS METHOD
+        //when click a card--- then click on a suit pile-- check if same suit and one above(think I have a method for this)--if yes then card for that sui pile is now imageplay and change the image--make sure draw a new card
+        //if play is an ace can put in any empty hole--//maybe set the card to rank 0
+        //when click one pile than a stack-- check against face card-- if yes then the suit is now that card- delete it from the pile and change images
+
+        //when click on pick then a suit card
+        Card suitCard;
+        suitCard=btnToCard(b);//make sure not null
+
+        //do move deck to suit after first do pile
+        //todo img
+
+        //todo put an image for the empty piles so they know which suit goes w which
+        //check to see if the card works
+        //figure out what card is on the top of the deck clicked
+
+        if(pick.canAddSuitStack(suitCard)&& isPlayClick && suitCard!=null){
+            //figure out what suit pile using --from imagebutton
+            // in this part  add card to suitpile
+                //draw a new card
+                //set the suit card to pick !!
+                // change images
+                //i think thats it for this part
+            if(b.equals(imgDeckClub)) {
+                pClub.add(pick);
+                cClub=pick;
+            }
+            else if(b.equals(imgDeckDiamond)){
+                pDiamond.add(pick);
+                cDiamond=pick;
+            }
+            else if(b.equals(imgDeckHeart)){
+                pHeart.add(pick);
+                cHeart=pick;
+            }
+            else if(b.equals(imgDeckSpade)) {
+                pSpade.add(pick);
+                cSpade=pick;
+            }
+            pick= createCard(imgCardPlay);
+            }
+            //for if trying to move an ace
+        else if(isPlayClick&&suitCard==null&&pick.getRank()==1){//dont even think i need to check if suitCard is null
+            if(b.equals(imgDeckClub)){
+                pClub.add(pick);
+                cClub=pick;
+            }
+            else if(b.equals(imgDeckDiamond)){
+                pDiamond.add(pick);
+                cDiamond=pick;
+            }
+            else if(b.equals(imgDeckHeart)){
+                pHeart.add(pick);
+                cHeart= pick;
+            }
+            else if(b.equals(imgDeckSpade)){
+                pSpade.add(pick);
+                cSpade=pick;
+            }
+            pick=createCard(imgCardPlay);
+
+        }
+        //for moving a deck
+        //if is deck click is false when click on a deck then store in a card field its card card
+        //todo gonna have to do onclick or at least part
+        //tod keep track of isDeckClick
+        if(!isDeckClick){
+            isDeckClick = true;
+            deckClick=btnToCard(b);
+            pMove=btnToPile(b);
+            intClick=btnToInt(b); //makesure this workds
+        }
+        //TODO remove one from the pile!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!make sure I double check this method
+        else if(isDeckClick&&deckClick.canAddSuitStack(suitCard)&&suitCard!=null&&deckClick!=null){
+            if(b.equals(imgDeckClub)) {
+                pClub.add(deckClick);
+                cClub=deckClick;
+            }
+            else if(b.equals(imgDeckDiamond)){
+                pDiamond.add(deckClick);
+                cDiamond=deckClick;
+            }
+            else if(b.equals(imgDeckHeart)){
+                pHeart.add(deckClick);
+                cHeart=deckClick;
+            }
+            else if(b.equals(imgDeckSpade)) {
+                pSpade.add(deckClick);
+                cSpade=deckClick;
+            }
+            //todo so if pile has only one check if other red ridges---if has other stuff in the pile remove white ridge
+            //change the image of the pile
+            //todo change images
+            if(intClick==1)
+                c1=createCard(imgCard1);//todo MAKE THIS BLANK and w others check if there are red cards
+            else if(intClick==2) {
+                if(p2.size()==1&&rRidgeCount2>=1){
+                    //take a card from red
+                    rRidgeCount2-=1;
+                    //change image!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    c2= createCard(imgCard2);
+                }
+                else if(p2.size()==1) {//check if its size would be 1 or 2
+
+                }//make blank
+                else if(p2.size()>1){
+                    c2 = p2.get(p2.size()-2);//todo check for sure messed this up
+                    //remove one card from pile
+                    //remove one from white ridges
+                    p2.remove(p2.size()-1); //todo for real tho how are the piles organized
+                    wRidgeCount2-=1;
+
+                }
+
+            }
+            else if(intClick==3){
+                if(p3.size()==1 &&rRidgeCount3>=1){
+                    rRidgeCount3-=1;
+                    c3=createCard(imgCard3);
+                }
+                else if(p3.size()==1){
+                    //make blank
+                }
+                else if(p3.size()>1){
+                    c3= p3.get(p3.size()-2);
+                    p3.remove(p3.size()-1);
+                    wRidgeCount3-=1;
+                }
+            }
+
+            else if(intClick==4){
+                if(p4.size()==1 && rRidgeCount4>=1){
+                    rRidgeCount4-=1;
+                    c4= createCard(imgCard4);
+                }
+                else if(p4.size()==1){
+                    //make blank
+                }
+                else if(p4.size()>1){
+                    c4=p4.get(p4.size()-2);
+                    p4.remove(p4.size()-1);
+                    wRidgeCount4-=1;
+                }
+            }
+
+            else if(intClick==5){
+                if(p5.size()==1&&rRidgeCount5>=1){
+                    rRidgeCount5-=1;
+                    c5=createCard(imgCard5);
+                }
+                else if(p5.size()==1){
+                    //make blank
+                }
+                else if(p5.size()>1){
+                    c5= p5.get(p5.size()-2);
+                    p5.remove(p5.size()-1);
+                    wRidgeCount5-=1;
+                }
+            }
+            else if(intClick==6){
+                if(p6.size()==1&&rRidgeCount6>=1){
+                    rRidgeCount6-=1;
+                    c6=createCard(imgCard6);
+                }
+                else if(p6.size()==1){
+                    //blanks
+                }
+                else if(p6.size()>1){
+                    c6= p6.get(p6.size()-2);
+                    p6.remove(p6.size()-1);
+                    wRidgeCount6-=1;
+                }
+            }
+               // c6=createCard(imgCard6);
+            else if(intClick==7) {
+                if(p7.size()==1 &&rRidgeCount7>=1){
+                    rRidgeCount7-=1;
+                    c7=createCard(imgCard7);
+                }
+                else if(p7.size()==1){
+                    //blanks
+                }
+                else if(p7.size()>1){
+                    c7=p7.get(p7.size()-2);
+                    p7.remove(p7.size()-1);
+                    wRidgeCount7-=1;
+                }
+            }
+        }
+
     }
 
 }

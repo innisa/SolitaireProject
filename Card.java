@@ -129,6 +129,7 @@ public class Card {
             if(suit.equals(c.getSuit()))
                 return true;
         }
+
         return false;
     }
 }
