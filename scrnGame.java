@@ -154,6 +154,16 @@ public class scrnGame extends AppCompatActivity {
 
         //set the onclickListeners for each deck
         //todo method to set these
+        //send in each suit image
+        pileOnClickListener(imgCard1);
+        pileOnClickListener(imgCard2);
+        pileOnClickListener(imgCard3);
+        pileOnClickListener(imgCard4);
+        pileOnClickListener(imgCard5);
+        pileOnClickListener(imgCard6);
+        pileOnClickListener(imgCard7);
+
+        suitOnClickListener(imgDeckClub);
 
 
     }
@@ -162,8 +172,17 @@ public class scrnGame extends AppCompatActivity {
     public void pileOnClickListener(ImageButton b){
         b.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                imgDeckOnClickListener(v.getId());//caste as button etc
-//todo save button b somewhere to send it in, how grab the button-
+                imgDeckOnClickListener((ImageButton)findViewById(v.getId()));//caste as button etc//v.getId and save it somewhere as the button
+                deckMoveOnClickListener((ImageButton)findViewById(v.getId()));//TODO start here
+            }
+        });
+    }
+
+    //set the onClickListeners for the suit cards
+    public void suitOnClickListener(ImageButton b){
+        b.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                suitOnClickListener((ImageButton)findViewById(v.getId()));//caste as button etc//v.getId and save it somewhere as the button
             }
         });
     }
