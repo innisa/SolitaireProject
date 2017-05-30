@@ -79,13 +79,11 @@ public class scrnGame extends AppCompatActivity {
     private ArrayList<Card> pClub;
 
     private int deckNum=0; //stores number of deck if isDeckClicked is false
-//todo have an arraylist for each pile
-    //todo have values for the number of red and white ridges on each pile
+
     //todo quit button
-    //todo tabbed activity
-    //todo settings
     //todo quit, when lose, when win, when deck runs  out of cards, when draw a card have to add that card to other deck
     //todo if pile empty and there are red left flip those jaunts
+    //todo refresh deck when none
     //todo before test code walk through it all
     //todo win lose make sure on clicks
     //todo watch out for null
@@ -164,7 +162,9 @@ public class scrnGame extends AppCompatActivity {
         pileOnClickListener(imgCard7);
 
         suitOnClickListener(imgDeckClub);
-
+        suitOnClickListener(imgDeckDiamond);
+        suitOnClickListener(imgDeckHeart);
+        suitOnClickListener(imgDeckSpade);
 
     }
 
